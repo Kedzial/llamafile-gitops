@@ -1,0 +1,23 @@
+---
+- name: Konfiguracja maszyny produkcyjnej NixOS (k3s + GitHub Actions Runner)
+  hosts: prod
+  become: true
+  tasks:
+    - name: Wdrożenie deklaratywnej konfiguracji NixOS
+      ansible.builtin.template:
+        src: configuration.nix.j2
+        dest: /etc/nixos/configuration.nix
+        owner: root
+        group: root
+        mode: "0644"
+      register: nixos_cfg
+
+    - name: Przebudowa systemu NixOS
+      ansible.builtin.command: nixos-rebuild switch
+      when: nixos_cfg.changed
+
+    - name: Weryfikacja działania usługi systemd runnera
+      ansible.builtin.systemd:
+        name: github-runner-prod
+        state: started
+        enabled: true
