@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llamafile-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llamafile
+  template:
+    metadata:
+      labels:
+        app: llamafile
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - name: llamafile
+        image: ghcr.io/Kedzial/llamafile-gitops:init
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: HOME
+            value: "/tmp"
+        envFrom:
+          - configMapRef:
+              name: llamafile-config
+        command:
+          - "/bin/bash"
+          - "/app/model.llamafile"
+        args:
+          - "--server"
+          - "--nobrowser"
+          - "--host"
+          - "0.0.0.0"
+          - "--port"
+          - "$(PORT)"
+          - "-t"
+          - "$(THREADS)"
+        resources:
+          requests:
+            memory: "1000Mi"
+            cpu: "1000m"
+          limits:
+            memory: "2500Mi"
+            cpu: "2000m"
+        startupProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 30
+        ports:
+        - containerPort: 8080
