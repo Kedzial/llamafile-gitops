@@ -95,7 +95,7 @@ jobs:
 
       - name: Verify rollout and rollback on failure
         run: |
-          if ! kubectl rollout status deployment/llamafile-deployment --timeout=180s; then
+          if ! kubectl rollout status deployment/llamafile-deployment --timeout=300s; then
             echo "Deployment failed! Executing rollback..."
             kubectl rollout undo deployment/llamafile-deployment
             exit 1
