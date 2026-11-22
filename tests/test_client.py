@@ -6,8 +6,9 @@ from src.client import build_chat_payload, check_health
 
 
 def test_build_chat_payload_valid():
-    payload = build_chat_payload("Witaj")
+    payload = build_chat_payload("Witaj", max_tokens=32)
     assert payload["model"] == "LLaMA_CPP"
+    assert payload["max_tokens"] == 32
     assert payload["messages"][0]["content"] == "Witaj"
 
 
