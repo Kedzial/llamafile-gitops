@@ -39,4 +39,4 @@ Przepływ procesu:
 W ramach testów potwierdzono poprawne działanie wszystkich mechanizmów ochronnych:
 - **Blokada wadliwego kodu (CI Gate):** Próba scalenia kodu niespełniającego reguł formatowania (`ruff format`) zatrzymała potok na pierwszym etapie, pomijając budowę obrazu i wdrożenie.
 - **Automatyczny Rollback (CD):** Symulacja błędu pobierania obrazu / przekroczenia czasu oczekiwania wyzwoliła automatyczne wycofanie zmiany (`kubectl rollout undo deployment/llamafile-deployment`), zachowując ciągłość działania poprzedniej repliki.
-- **Praca zespołowa i Rolling Update:** Po akceptacji Pull Requestów i scaleniu zmian od wielu kolaborantów klaster `k3s` przeprowadził bezprzerwową podmianę kontenerów (`deployment "llamafile-deployment" successfully rolled out`), a usługa odpowiada poprawnie pod adresem `http://192.168.100.162:8080/v1/models`.
+- **Praca zespołowa i Rolling Update:** Po akceptacji Pull Requestów i scaleniu zmian od wielu kolaborantów klaster `k3s` przeprowadził bezprzerwową podmianę kontenerów (`deployment "llamafile-deployment" successfully rolled out`), a usługa odpowiada poprawnie pod adresem `http://192.168.100.162:8080/v1/models`
