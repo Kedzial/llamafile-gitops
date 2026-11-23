@@ -4,7 +4,7 @@ import pytest
 
 from src.client import build_chat_payload, check_health
 
-
+# komentarz
 def test_build_chat_payload_valid():
     payload = build_chat_payload("Witaj", max_tokens=32)
     assert payload["model"] == "LLaMA_CPP"
